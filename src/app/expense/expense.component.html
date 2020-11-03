@@ -1,0 +1,120 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box" *ngIf="!editform">
+        <mat-card-header>
+            <mat-card-title>Expense Form</mat-card-title>
+        </mat-card-header>
+
+        <form class="example-form" #expense="ngForm" (ngSubmit)="submitexpense(expense)">
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <!-- <mat-label>Favorite food</mat-label> -->
+                    <mat-select name="category" ngModel>
+                        <mat-option *ngFor="let food of Category" [value]="food.title">
+                            {{food.title}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- <h4>Basic native select</h4>
+                <mat-form-field appearance="fill">
+                    <mat-label>Cars</mat-label>
+                    <select matNativeControl required>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                  </select>
+                </mat-form-field> -->
+
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="title" name="title" ngModel>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="money" name="money" ngModel>
+                </mat-form-field>
+            </mat-card-content>
+
+            <button mat-raised-button color="accent" class="btn-block" type="submit">Add Spend</button>
+
+        </form>
+    </mat-card>
+
+    <mat-card class="box" *ngIf="editform">
+        <mat-card-header>
+            <mat-card-title>Expense Form</mat-card-title>
+        </mat-card-header>
+
+        <form class="example-form" #expense="ngForm" (ngSubmit)="updateForm(expense)">
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <!-- <mat-label>Favorite food</mat-label> -->
+                    <mat-select name="category" [(ngModel)]="category">
+                        <mat-option *ngFor="let food of Category" [value]="food.title">
+                            {{food.title}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="title" name="title" [(ngModel)]="title">
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="money" name="money" [(ngModel)]="money">
+                </mat-form-field>
+            </mat-card-content>
+
+            <button mat-raised-button color="accent" class="btn-block" type="submit">Update Spend</button>
+
+        </form>
+    </mat-card>
+
+</div>
+
+
+<table mat-table [dataSource]="Expenses" matSort class="mat-elevation-z8">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="SrNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> SrNo</th>
+        <td mat-cell *matCellDef="let element"> {{element._id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+        <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> title </th>
+        <td mat-cell *matCellDef="let element"> {{element.title }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="money">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> money </th>
+        <td mat-cell *matCellDef="let element"> {{element.money }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.Date | date:'short'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-fab color="warn" class="btn-block" (click)="editForm(element)">Edit</button>
+            <button mat-fab color="warn" class="btn-block" (click)="deleteExpense(element)">delete</button>
+        </td>
+    </ng-container>
+
+
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayColoumns"></tr>
+    <tr mat-row *matRowDef="let row; let i=index;columns: displayColoumns;"></tr>
+</table>
